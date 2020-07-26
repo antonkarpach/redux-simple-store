@@ -1,32 +1,43 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-export const Page = (props) => {
-    const onBtnClick = e => {
+export class Page extends React.Component {
+    onBtnClick = e => {
         const year = +e.currentTarget.innerText
-        props.setYear(year)
+        this.props.getPhotos(year)
     }
-
-        const { year, photos } = props
+    render() {
+        const { year, photos, isFetching } = this.props
+        console.log(isFetching);
         return (
-            <div>
-                <div>
-                    <button onClick={onBtnClick}>2018</button>
-                    <button onClick={onBtnClick}>2017</button>
-                    <button onClick={onBtnClick}>2016</button>
-                    <button onClick={onBtnClick}>2015</button>
-                    <button onClick={onBtnClick}>2014</button>
-                </div>
+            <div className="ib page">
                 <p>
-                    У тебя {photos.length} фото за {year} год
+                    <button className="btn" onClick={this.onBtnClick}>
+                        2018
+                    </button>{' '}
+                    <button className="btn" onClick={this.onBtnClick}>
+                        2017
+                    </button>{' '}
+                    <button className="btn" onClick={this.onBtnClick}>
+                        2016
+                    </button>{' '}
+                    <button className="btn" onClick={this.onBtnClick}>
+                        2015
+                    </button>{' '}
+                    <button className="btn" onClick={this.onBtnClick}>
+                        2014
+                    </button>
                 </p>
+                <h3>{year} год</h3>
+                {!!isFetching ? <p>Загрузка...</p> : <p>У тебя {photos.length} фото.</p>}
             </div>
         )
+    }
 }
-
 
 Page.propTypes = {
     year: PropTypes.number.isRequired,
     photos: PropTypes.array.isRequired,
-    setYear: PropTypes.func.isRequired,
+    getPhotos: PropTypes.func.isRequired,
+    isFetching: PropTypes.bool.isRequired,
 }
